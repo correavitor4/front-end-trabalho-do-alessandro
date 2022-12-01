@@ -1,0 +1,15 @@
+#mainContainer{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ccc;
+    margin: 0 auto;
+    padding: 10px;
+    width: 95%;
+    margin-top: 2.5%;
+}
+
+#header{
+    width: 100%;
+    background-color: red;
+}
