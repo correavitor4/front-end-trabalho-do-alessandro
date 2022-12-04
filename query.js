@@ -11,6 +11,7 @@ class Query{
     createNewRowInEachTable(){
         this.queriesTable.insertRow(this.queryCounter).innerHTML = `<td id="${"queriesTableRow"+this.queryIndex}">${"Iniciando Requisição"}</td>`;
         this.resultsTable.insertRow(this.queryCounter).innerHTML = `<td id="${"resultsTableRow"+this.queryIndex}">${"..."}</td>`;
+        selectQueriesTableRow(this.queryIndex);
     }
 
     request(){

@@ -12,6 +12,20 @@ const startQueries = () => {
     }
 }
 
+const queryRowClicked = (rowId) => {
+    queriesIndex = rowId.replace("queriesTableRow", "");
+    queries[queriesIndex].select();
+}
+
 const getQueriesNumber = () => {
     return Math.random() * 10;
+}
+
+const selectQueriesTableRow = (rowId) => {
+    let queryCellOfRow = document.getElementById("queriesTableRow"+rowId);
+    let input = document.getElementById("req-sel")
+    document.getElementById("queriesTableRow"+rowId).addEventListener("click", () => {
+        input.innerHTML = queryCellOfRow.innerHTML;
+    })  
+    // window.alert("row clicked");
 }
