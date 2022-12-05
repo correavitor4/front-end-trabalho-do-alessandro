@@ -147,11 +147,6 @@ const startCompetition = async () => {
     }
 }
 
-const workerMessageInterpreter = (e) => {
-    if(e.data.mesage == "buy"){
-        
-    }
-}
 
 const delay = (time) => {
     return new Promise(resolve => setTimeout(resolve, time));

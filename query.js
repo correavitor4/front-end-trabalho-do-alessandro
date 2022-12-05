@@ -44,7 +44,7 @@ class Query{
         }
         
         var page = this.getRandomInt(1,5000);
-        var req = `http://localhost:5251/assets?page=${page}`;
+        var req = `http://localhost:5000/assets?page=${page}`;
         this.setQueryRowValue(req);
         xhr.open("GET", req, true);
         xhr.send();
@@ -73,7 +73,7 @@ class Query{
             }
         }
         var page = this.getRandomInt(1,1000);
-        var req = `http://localhost:5251/${company}/assets?page=${page}`;
+        var req = `http://localhost:5000/${company}/assets?page=${page}`;
         this.setQueryRowValue(req);
         xhr.open("GET", req, true);
         xhr.send();
