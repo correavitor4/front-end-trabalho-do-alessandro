@@ -34,15 +34,11 @@ class Query{
     createBaseRequest(){
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = () => {
-            if (xhr.status == 200) {
+            if (xhr.readyState == 4 && xhr.status == 200) {
                 this.queryResponse = JSON.parse(xhr.response);
                 this.queryResponse.assets.forEach(element => {
                     this.createTableRowValue(element);
                 });
-            }
-
-            else{
-                window.alert("response code: " + xhr.status);
             }
         }
         
@@ -52,36 +48,36 @@ class Query{
         xhr.send();
     }
 
-    createRequestByCompanyName(){
-        let companiesList = [
-            "Compania de Petroleo do Rio de Janeiro",
-            "Compania de Carne Aiai",
-            "Mineradora Corrêa",
-            "Compania Elétrica BA",
-            "Compania Eólica",
-            "Compania de Eletrodomésticos",
-            "Compania de Aviação",
-        ]
-        let company = companiesList[this.getRandomInt(0,companiesList.length)];
+    // createRequestByCompanyName(){
+    //     let companiesList = [
+    //         "Compania de Petroleo do Rio de Janeiro",
+    //         "Compania de Carne Aiai",
+    //         "Mineradora Corrêa",
+    //         "Compania Elétrica BA",
+    //         "Compania Eólica",
+    //         "Compania de Eletrodomésticos",
+    //         "Compania de Aviação",
+    //     ]
+    //     let company = companiesList[this.getRandomInt(0,companiesList.length)];
 
-        let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = () => {
-            if (xhr.status == 200) {
-                this.queryResponse = JSON.parse(xhr.response);
-                this.queryResponse.assets.forEach(element => {
-                    this.createTableRowValue(element);
-                });
-            }
-            else{
-                window.alert("response code: " + xhr.status);
-            }
-        }
-        var page = this.getRandomInt(1,10);
-        var req = `http://localhost:5251/${company}/assets?page=${page}`;
-        // this.createTableRowValue(req);
-        xhr.open("GET", req, true);
-        xhr.send();
-    }
+    //     let xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = () => {
+    //         if (xhr.status == 200) {
+    //             this.queryResponse = JSON.parse(xhr.response);
+    //             this.queryResponse.assets.forEach(element => {
+    //                 this.createTableRowValue(element);
+    //             });
+    //         }
+    //         else{
+    //             window.alert("response code: " + xhr.status);
+    //         }
+    //     }
+    //     var page = this.getRandomInt(1,10);
+    //     var req = `http://localhost:5251/${company}/assets?page=${page}`;
+    //     // this.createTableRowValue(req);
+    //     xhr.open("GET", req, true);
+    //     xhr.send();
+    // }
 
     getRandomInt(min,max){
         min = Math.floor(min);
@@ -92,12 +88,33 @@ class Query{
     createTableRowValue(value){
         // console.log(value);
         // const queriesTableRow = document.getElementById("queriesTableRow"+value.id);
-        this.queriesTable.insertRow(this.queryCounter).innerHTML = `<td id="${"queriesTableRow"+value.guid}">${value.guid+" "+value.companyName}</td><td><button id="${"queriesTableButton"+ value.guid}">Efetivar</button></td>`;
-        
+        this.queriesTable.insertRow(this.queryCounter).innerHTML = `<td id="${"queriesTableRow"+value.guid}">${value.guid+" "+value.companyName}</td><td><button id="${"queriesTableButton"+ value.guid}" >Efetivar</button></td>`;
+        this.resultsTable.insertRow(this.queryCounter).innerHTML = `<td id="${"resultsTableRow"+value.guid}">${"..."}</td>`;
+        let button = document.getElementById("queriesTableButton"+value.guid);
+        button.addEventListener("click", () => {
+            this.getResourceByGuid(value.guid);
+        });
     }
 
     setResultsRowValue(value){
-        const resultsTableRow = document.getElementById("resultsTableRow"+this.queryIndex);
-        resultsTableRow.innerHTML = value;
+        let resultsTableRow = document.getElementById("resultsTableRow"+value.guid);
+        // console.log(resultsTableRow);
+        resultsTableRow.innerHTML = value.guid+" "+value.companyName + " com sucesso";
+    }
+
+    getResourceByGuid(guid){
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = () => {
+            if (xhr.status == 200) {
+                let queryResponse = JSON.parse(xhr.response);
+                this.setResultsRowValue(queryResponse);
+            }
+            else{
+                // window.alert("response code: " + xhr.status);
+            }
+        }
+        var req = `http://localhost:5251/assets/${guid}`;
+        xhr.open("GET", req, true);
+        xhr.send();
     }
 }
