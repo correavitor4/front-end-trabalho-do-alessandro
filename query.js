@@ -4,18 +4,19 @@ class Query{
         this.queriesTable = document.getElementById('queriesTable');
         this.resultsTable = document.getElementById('resultsTable');
         this.queryResponse = null;
-        this.createNewRowInEachTable();
+        // this.createNewRowInEachTable();
         this.request();
     }
 
-    createNewRowInEachTable(){
-        this.queriesTable.insertRow(this.queryCounter).innerHTML = `<td id="${"queriesTableRow"+this.queryIndex}">${"Iniciando Requisição"}</td>`;
-        this.resultsTable.insertRow(this.queryCounter).innerHTML = `<td id="${"resultsTableRow"+this.queryIndex}">${"..."}</td>`;
-        selectQueriesTableRow(this.queryIndex);
-    }
+    // createNewRowInEachTable(){
+    //     this.queriesTable.insertRow(this.queryCounter).innerHTML = `<td id="${"queriesTableRow"+this.queryIndex}">${"Iniciando Requisição"}</td>`;
+    //     this.resultsTable.insertRow(this.queryCounter).innerHTML = `<td id="${"resultsTableRow"+this.queryIndex}">${"..."}</td>`;
+    //     selectQueriesTableRow(this.queryIndex);
+    // }
 
     request(){
-        this.createRandomRequest();
+        this.createBaseRequest();
+        // this.createRandomRequest();
     }
 
     createRandomRequest(){
@@ -35,17 +36,18 @@ class Query{
         xhr.onreadystatechange = () => {
             if (xhr.status == 200) {
                 this.queryResponse = JSON.parse(xhr.response);
-                this.setResultsRowValue("Assets geted: " + this.queryResponse.count);
+                this.queryResponse.assets.forEach(element => {
+                    this.createTableRowValue(element);
+                });
             }
 
             else{
-                this.setResultsRowValue("response code: " + xhr.status);
+                window.alert("response code: " + xhr.status);
             }
         }
         
-        var page = this.getRandomInt(1,5000);
-        var req = `http://localhost:5000/assets?page=${page}`;
-        this.setQueryRowValue(req);
+        var page = this.getRandomInt(1,10);
+        var req = `http://localhost:5251/assets?page=${page}`;
         xhr.open("GET", req, true);
         xhr.send();
     }
@@ -66,15 +68,17 @@ class Query{
         xhr.onreadystatechange = () => {
             if (xhr.status == 200) {
                 this.queryResponse = JSON.parse(xhr.response);
-                this.setResultsRowValue("Assets geted: " + this.queryResponse.count);
+                this.queryResponse.assets.forEach(element => {
+                    this.createTableRowValue(element);
+                });
             }
             else{
-                this.setResultsRowValue("response code: " + xhr.status);
+                window.alert("response code: " + xhr.status);
             }
         }
-        var page = this.getRandomInt(1,1000);
-        var req = `http://localhost:5000/${company}/assets?page=${page}`;
-        this.setQueryRowValue(req);
+        var page = this.getRandomInt(1,10);
+        var req = `http://localhost:5251/${company}/assets?page=${page}`;
+        // this.createTableRowValue(req);
         xhr.open("GET", req, true);
         xhr.send();
     }
@@ -85,9 +89,11 @@ class Query{
         return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
     }
 
-    setQueryRowValue(value){
-        const queriesTableRow = document.getElementById("queriesTableRow"+this.queryIndex);
-        queriesTableRow.innerHTML = value;
+    createTableRowValue(value){
+        // console.log(value);
+        // const queriesTableRow = document.getElementById("queriesTableRow"+value.id);
+        this.queriesTable.insertRow(this.queryCounter).innerHTML = `<td id="${"queriesTableRow"+value.guid}">${value.guid+" "+value.companyName}</td><td><button id="${"queriesTableButton"+ value.guid}">Efetivar</button></td>`;
+        
     }
 
     setResultsRowValue(value){

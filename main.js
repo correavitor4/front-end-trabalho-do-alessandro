@@ -1,15 +1,9 @@
-let queries = [];
 let queriesNumber = 0;
 let memoryItems = [];
 
 
 const startQueries = () => {
-    initIndex = queriesNumber;
-    queriesNumber += getQueriesNumber();
-    for (let i = initIndex; i < queriesNumber; i++) {
-        const query = new Query(i);
-        queries.push(query);
-    }
+    let query = new Query();
 }
 
 const queryRowClicked = (rowId) => {

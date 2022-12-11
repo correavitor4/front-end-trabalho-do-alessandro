@@ -43,3 +43,7 @@
 #startButton{
     width:200px;
 }
+
+#queriesTable td {
+    border: 1px solid black;
+}
