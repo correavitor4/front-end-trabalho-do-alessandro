@@ -1,9 +1,10 @@
 let queriesNumber = 0;
 let memoryItems = [];
+let query;
 
 
 const startQueries = () => {
-    let query = new Query();
+     query = new Query();
 }
 
 const queryRowClicked = (rowId) => {
@@ -25,10 +26,19 @@ const selectQueriesTableRow = (rowId) => {
 }
 
 const efetivarBtnClicker = () => {
+    createBaseRequest();
+}
+
+const getRandomInt = (min,max) => {
+    min = Math.floor(min);
+    max = Math.floor(max+1);
+    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
+
+const createBaseRequest = () => {
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = () => {
-        if(xhr.readyState == 4 && xhr.status == 200){
-            window.alert("Requisição efetivada com sucesso!  A competição entre os workers irá começar");
+        if (xhr.readyState == 4 && xhr.status == 200) {
             let response = JSON.parse(xhr.response).assets;
             let memoryItemsCount = 0;
             response.forEach(element => {
@@ -44,11 +54,10 @@ const efetivarBtnClicker = () => {
             });
             startCompetition();
         }
-        else if(xhr.readyState == 4 && xhr.status != 200){
-            window.alert("Requisição não efetivada! Http status code: " + xhr.status);
-        }
     }
-    let req =  document.getElementById("req-sel").innerHTML
+    
+    var page = getRandomInt(1,10);
+    var req = `http://localhost:5251/assets?page=${page}`;
     xhr.open("GET", req, true);
     xhr.send();
 }

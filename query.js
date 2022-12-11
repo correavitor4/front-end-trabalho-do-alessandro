@@ -102,6 +102,12 @@ class Query{
         resultsTableRow.innerHTML = value.guid+" "+value.companyName + " com sucesso";
     }
 
+    setResultsRowValueNoContent(){
+        let resultsTableRow = document.getElementById("resultsTableRow"+value.guid);
+        // console.log(resultsTableRow);
+        resultsTableRow.innerHTML = "Não mais disponível";
+    }
+
     getResourceByGuid(guid){
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = () => {
@@ -110,7 +116,7 @@ class Query{
                 this.setResultsRowValue(queryResponse);
             }
             else{
-                // window.alert("response code: " + xhr.status);
+                this.setResultsRowValueNoContent();
             }
         }
         var req = `http://localhost:5251/assets/${guid}`;
