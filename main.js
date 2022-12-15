@@ -1,10 +1,27 @@
 let queriesNumber = 0;
 let memoryItems = [];
-let query;
+var query = new Query();
+var page =1;
+
+
+const nextButtonClicked = () => {
+    query.createBaseRequest(page+1);
+    page++;
+}
+
+const prevButtonClicked = () => {
+    if(page < 2){
+        window.alert("Não é possível voltar para a página anterior, pois a página atual é a primeira");
+        return
+    }
+    query.createBaseRequest(page-1);
+    page--;
+}
 
 
 const startQueries = () => {
-     query = new Query();
+     
+     query.createBaseRequest(1);
 }
 
 const queryRowClicked = (rowId) => {
@@ -154,3 +171,6 @@ const startCompetition = async () => {
 const delay = (time) => {
     return new Promise(resolve => setTimeout(resolve, time));
 }
+
+document.getElementById("nextButton").addEventListener("click", nextButtonClicked);
+document.getElementById("prevButton").addEventListener("click", prevButtonClicked);
